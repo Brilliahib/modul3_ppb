@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mod3_kel26/screen/splash_screen.dart';
 import './widget/navigation.dart';
 
 void main() {
@@ -13,11 +14,11 @@ class MangaApp extends StatelessWidget {
       title: 'MangaApp',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 4, 195, 10),
+          seedColor: Color.fromARGB(255, 3, 116, 255),
         ),
         useMaterial3: true,
       ),
-      home: const NavigationPage(),
+      home: const SplashScreen(),
     );
   }
 }

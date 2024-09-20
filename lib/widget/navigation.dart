@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screen/home.dart';
 import '../screen/profile.dart';
+import '../screen/about.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -13,6 +14,7 @@ class _NavigationPageState extends State<NavigationPage> {
   final List<Widget> _pages = [
     const HomePage(),
     const ProfilePage(),
+    const AboutPage(),
   ];
   void _onTabTapped(int index) {
     setState(() {
@@ -35,6 +37,10 @@ class _NavigationPageState extends State<NavigationPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.apps_sharp),
+            label: 'About',
           ),
         ],
       ),

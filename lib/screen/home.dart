@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'detail.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,10 +37,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'DBS_MANGA',
+          'Hello, Brilliahib!',
           style: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
           ),
           textAlign: TextAlign.center,
         ),
@@ -48,6 +49,7 @@ class _HomePageState extends State<HomePage> {
       body: mangaList.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(
+              physics: const AlwaysScrollableScrollPhysics(), // Biarkan scroll
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 8.0,
@@ -57,16 +59,59 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final mangaAttributes = mangaList[index]['attributes'];
                 final mangaTitle = mangaAttributes['title']['en'] ?? 'No Title';
-                return Card(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        mangaTitle,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                final mangaAltTitle = mangaAttributes['altTitles'].isNotEmpty &&
+                        mangaAttributes['altTitles'][0].containsKey('ja')
+                    ? mangaAttributes['altTitles'][0]['ja']
+                    : 'No Alt Title';
+                final description = mangaAttributes['description']['en'] ??
+                    'No description available';
+                final year = mangaAttributes['year'] != null
+                    ? int.tryParse(mangaAttributes['year'].toString()) ?? 0
+                    : 0; // Menggunakan int
+                final originalLanguage =
+                    mangaAttributes['originalLanguage'] ?? 'Unknown';
+
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MangaDetailPage(
+                          mangaTitle: mangaTitle,
+                          mangaAltTitle: mangaAltTitle,
+                          description: description,
+                          year: year,
+                          originalLanguage: originalLanguage,
                         ),
-                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  },
+                  child: Card(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              mangaTitle,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(
+                                height:
+                                    8.0), // Jarak antara title dan alt title
+                            Text(
+                              mangaAltTitle,
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
